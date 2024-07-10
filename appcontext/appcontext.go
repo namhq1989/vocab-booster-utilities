@@ -3,6 +3,7 @@ package appcontext
 import (
 	"context"
 
+	"github.com/namhq1989/vocab-booster-utilities/language"
 	"github.com/namhq1989/vocab-booster-utilities/logger"
 	"github.com/segmentio/ksuid"
 )
@@ -12,6 +13,7 @@ type contextKey int
 const (
 	userContextKey contextKey = iota
 	ipContextKey
+	langContextKey
 )
 
 type AppContext struct {
@@ -88,6 +90,24 @@ func (appCtx *AppContext) GetIP() string {
 		return ""
 	}
 	return ip
+}
+
+func (appCtx *AppContext) SetLang(lang string) {
+	appCtx.context = context.WithValue(appCtx.context, langContextKey, lang)
+}
+
+func (appCtx *AppContext) GetLang() language.Language {
+	lang, ok := appCtx.context.Value(langContextKey).(string)
+	if !ok {
+		return language.Vietnamese
+	}
+
+	dLang := language.ToLanguage(lang)
+	if !dLang.IsValid() {
+		return language.Vietnamese
+	}
+
+	return dLang
 }
 
 func generateID() string {
