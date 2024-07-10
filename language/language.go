@@ -13,7 +13,7 @@ func (l Language) String() string {
 }
 
 func (l Language) IsValid() bool {
-	return l == Unknown
+	return l != Unknown
 }
 
 func (l Language) IsEnglish() bool {
