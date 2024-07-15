@@ -12,3 +12,7 @@ func (l TranslatedLanguages) GetLanguageValue(lang string) string {
 
 	return l.Vietnamese
 }
+
+func (l TranslatedLanguages) IsEmpty() bool {
+	return l.Vietnamese == ""
+}
