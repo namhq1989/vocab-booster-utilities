@@ -14,6 +14,7 @@ const (
 	userContextKey contextKey = iota
 	ipContextKey
 	langContextKey
+	timezoneContextKey
 )
 
 type AppContext struct {
@@ -108,6 +109,18 @@ func (appCtx *AppContext) GetLang() language.Language {
 	}
 
 	return dLang
+}
+
+func (appCtx *AppContext) SetTimezone(tz string) {
+	appCtx.context = context.WithValue(appCtx.context, timezoneContextKey, tz)
+}
+
+func (appCtx *AppContext) GetTimezone() string {
+	id, ok := appCtx.context.Value(timezoneContextKey).(string)
+	if !ok {
+		return ""
+	}
+	return id
 }
 
 func generateID() string {
