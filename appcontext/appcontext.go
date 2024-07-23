@@ -5,6 +5,7 @@ import (
 
 	"github.com/namhq1989/vocab-booster-utilities/language"
 	"github.com/namhq1989/vocab-booster-utilities/logger"
+	"github.com/namhq1989/vocab-booster-utilities/timezone"
 	"github.com/segmentio/ksuid"
 )
 
@@ -115,12 +116,17 @@ func (appCtx *AppContext) SetTimezone(tz string) {
 	appCtx.context = context.WithValue(appCtx.context, timezoneContextKey, tz)
 }
 
-func (appCtx *AppContext) GetTimezone() string {
-	id, ok := appCtx.context.Value(timezoneContextKey).(string)
+func (appCtx *AppContext) GetTimezone() timezone.Timezone {
+	tz, ok := appCtx.context.Value(timezoneContextKey).(string)
 	if !ok {
-		return ""
+		return *timezone.UTC
 	}
-	return id
+
+	utz, err := timezone.GetTimezoneData(tz)
+	if err != nil {
+		appCtx.logger.Error("error when getting user timezone", err, Fields{"timezone": tz})
+	}
+	return *utz
 }
 
 func generateID() string {

@@ -14,7 +14,7 @@ type Timezone struct {
 // If timezone is incorrect, it will return an error and a default timezone of UTC
 //
 
-var utc = &Timezone{
+var UTC = &Timezone{
 	Identifier: "UTC",
 	Offset:     "+00:00",
 }
@@ -23,7 +23,7 @@ func GetTimezoneData(identifier string) (*Timezone, error) {
 	// load the timezone location
 	location, err := time.LoadLocation(identifier)
 	if err != nil {
-		return utc, fmt.Errorf("error loading location: %v", err)
+		return UTC, fmt.Errorf("error loading location: %v", err)
 	}
 
 	// get the current time in UTC
