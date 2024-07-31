@@ -24,6 +24,15 @@ func (l Language) IsVietnamese() bool {
 	return l == Vietnamese
 }
 
+func (l Language) GetCountry() string {
+	switch l {
+	case Vietnamese:
+		return "Vietnam"
+	default:
+		return ""
+	}
+}
+
 func ToLanguage(lang string) Language {
 	switch lang {
 	case English.String():
